@@ -9,13 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
       - uses: actions/setup-node@v3
         with:
           node-version: 20
           # Include the cache option for pnpm
           cache: 'pnpm'
-      # Install pnpm
-      - run: npm install -g pnpm
       # Use pnpm for installing dependencies and running tests
       - run: pnpm install --frozen-lockfile
       - run: pnpm test
@@ -25,14 +26,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
       - uses: actions/setup-node@v3
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
           # Include the cache option for pnpm
           cache: 'pnpm'
-      # Install pnpm
-      - run: npm install -g pnpm
       # Use pnpm for installing dependencies
       - run: pnpm install --frozen-lockfile
       # Use pnpm for publishing. Note that pnpm might require --access public for scoped packages or if you're publishing to an organization for the first time
