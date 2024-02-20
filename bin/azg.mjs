@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 import yargs from "yargs/yargs";
 import { hideBin } from "yargs/helpers";
 import setup from "../src/setup.mjs";
@@ -8,6 +7,7 @@ import status from "../src/status.mjs";
 import checkoutStory from "../src/checkoutStory.mjs";
 import changeStatus from "../src/changeStatus.mjs";
 import getStoryInfo from "../src/getStoryInfo.mjs";
+import openStory from "../src/openStory.mjs";
 
 yargs(hideBin(process.argv))
   .command(
@@ -33,6 +33,12 @@ yargs(hideBin(process.argv))
     "Get info on the current story",
     () => {},
     async () => await getStoryInfo()
+  )
+  .command(
+    "open",
+    "Open and view the specified story",
+    () => {},
+    async () => await openStory()
   )
   .command(
     "checkout",
