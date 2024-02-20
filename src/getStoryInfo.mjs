@@ -97,7 +97,7 @@ async function getStoryInfo() {
     // Strip extra new lines
     description = cleanText(description);
     acceptanceCriteria = cleanText(acceptanceCriteria);
-    reproSteps = cleanText(reproSteps);
+    if (reproSteps) reproSteps = cleanText(reproSteps);
 
     const bold = (text) => `\x1b[1m\x1b[34m${text}\x1b[0m`;
 
