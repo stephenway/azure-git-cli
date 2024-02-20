@@ -97,6 +97,7 @@ async function getStoryInfo() {
     // Strip extra new lines
     description = cleanText(description);
     acceptanceCriteria = cleanText(acceptanceCriteria);
+    reproSteps = cleanText(reproSteps);
 
     const bold = (text) => `\x1b[1m\x1b[34m${text}\x1b[0m`;
 
@@ -104,6 +105,7 @@ async function getStoryInfo() {
     console.log(`${bold(`${workItemType} ${workItemDetails.id}`)}: ${title}`);
     console.log(`${bold("State")}: ${renderStatus(state)}`);
     if (description) console.log(`${bold("Description")}:\n${description}`);
+    if (reproSteps) console.log(`${bold("Repro Steps")}:\n${reproSteps}`);
     if (systemInfo) console.log(`${bold("System Info")}:\n${systemInfo}`);
     if (acceptanceCriteria)
       console.log(`${bold("Acceptance Criteria")}:\n${acceptanceCriteria}`);
