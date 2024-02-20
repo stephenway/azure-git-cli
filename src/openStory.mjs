@@ -13,18 +13,8 @@ const args = process.argv.slice(2); // Remove the first two elements
 const storyNumber = args.find(
   (arg) => arg.startsWith("-n=") || arg.startsWith("--number=")
 );
-const statusUpdateArg = args.find(
-  (arg) => arg.startsWith("-s=") || arg.startsWith("--status-update=")
-);
-const statusUpdateValue = statusUpdateArg
-  ? statusUpdateArg.split("=")[1]
-  : null;
 
 const openStory = async () => {
-  // Check if the current branch is a story branch before proceeding
-  // const onStoryBranch = await checkIfOnStoryBranch();
-  // if (onStoryBranch) return;
-
   // Directly use "@CurrentIteration" if no story number is provided and the flag is not present
   let selectedIterationPath = "@CurrentIteration";
   const shouldSelectIteration =
@@ -51,13 +41,6 @@ const openStory = async () => {
   open(url)
     .then(() => console.log(`Opened ${url} in the default browser.`))
     .catch((err) => console.error(`Failed to open ${url}:`, err));
-  // Proceed with creating a branch and updating the work item status
-  // createGitBranch(selectedStoryId);
-
-  // Update the work item status if the --status-update flag was provided with a value
-  // if (statusUpdateValue) {
-  //   await updateWorkItemStatus(selectedStoryId, statusUpdateValue);
-  // }
 };
 
 export default openStory;
