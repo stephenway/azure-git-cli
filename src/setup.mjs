@@ -17,7 +17,8 @@ async function promptForConfig() {
     },
     {
       name: "personalAccessToken",
-      message: "Enter your Azure DevOps personal access token:",
+      message:
+        "Enter your Azure DevOps personal access token (converted to base 64):",
       type: "password",
     },
     {
