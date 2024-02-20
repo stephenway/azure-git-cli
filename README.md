@@ -9,7 +9,7 @@ To use the AZG CLI tool, ensure that you have Node.js installed on your machine.
 Run the following command to install:
 
 ```bash
-npm install -g azg
+npm install -g azure-git
 ```
 
 ### Get started
