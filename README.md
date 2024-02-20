@@ -2,7 +2,6 @@
 
 Designed to enhance project management and workflow directly from the command line. Offering a suite of commands to manage project stories/work items, teams, and more
 
-````
 ## Installation
 
 To use the AZG CLI tool, ensure that you have Node.js installed on your machine. The tool can be installed globally on your system, allowing you to use it from anywhere in your terminal.
@@ -11,7 +10,7 @@ Run the following command to install:
 
 ```bash
 npm install -g azg
-````
+```
 
 ### Get started
 
