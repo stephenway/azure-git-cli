@@ -38,14 +38,23 @@ async function queryAzureDevOps(workItemId) {
 
 async function getStoryInfo() {
   try {
-    const currentBranch = await getCurrentGitBranch();
-    if (!isStoryNumber(currentBranch)) {
-      console.log("The current branch name is not a story number.");
-      return;
-    }
+    // Parse command line arguments to look for the --id= flag
+    const idArg = process.argv.find((arg) => arg.startsWith("--id="));
+    let workItemId;
 
-    // Extract the numeric part of the story number
-    const workItemId = currentBranch.match(/\d+/)[0];
+    if (idArg) {
+      // Extract the ID value from the --id= flag
+      workItemId = idArg.split("=")[1];
+    } else {
+      // Fallback to using the current git branch as the story number if no --id= flag is provided
+      const currentBranch = await getCurrentGitBranch();
+      if (!isStoryNumber(currentBranch)) {
+        console.log("The current branch name is not a story number.");
+        return;
+      }
+      // Extract the numeric part of the story number from the branch name
+      workItemId = currentBranch.match(/\d+/)[0];
+    }
     const workItemDetails = await queryAzureDevOps(workItemId);
     const coAssigneesRes = await fetchAssigneesOfChildTasks(workItemId);
     const coAssignees =
@@ -66,7 +75,14 @@ async function getStoryInfo() {
     let description = htmlToText(workItemDetails.fields["System.Description"], {
       wordwrap: 130,
     });
-    // TODO: Figure out how to get repro steps for bugs
+
+    // Handle Repro Steps for Bugs, assuming the field is "Microsoft.VSTS.TCM.ReproSteps"
+    let reproSteps = workItemDetails.fields["Microsoft.VSTS.TCM.ReproSteps"]
+      ? htmlToText(workItemDetails.fields["Microsoft.VSTS.TCM.ReproSteps"], {
+          wordwrap: 130,
+        })
+      : null;
+
     let systemInfo = htmlToText(workItemDetails.fields["System.SystemInfo"], {
       wordwrap: 130,
     });

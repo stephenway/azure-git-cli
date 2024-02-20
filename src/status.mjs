@@ -17,16 +17,6 @@ const status = async () => {
     return;
   }
 
-  // // Output each story's details to the terminal
-  // console.log("Assigned Stories:");
-
-  // const maxIdLength = Math.max(
-  //   ...stories.map((story) => story.id.toString().length)
-  // );
-  // stories.forEach((story, index) => {
-  //   console.log(renderStory(story, maxIdLength));
-  // });
-
   console.log(`Working on ${config.project} with ${config.teamName}`);
   console.log("");
 
