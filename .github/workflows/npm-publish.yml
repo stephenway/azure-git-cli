@@ -1,6 +1,3 @@
-# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
-# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
-
 name: Node.js Package
 
 on:
@@ -15,8 +12,13 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20
-      - run: npm ci
-      - run: npm test
+          # Include the cache option for pnpm
+          cache: 'pnpm'
+      # Install pnpm
+      - run: npm install -g pnpm
+      # Use pnpm for installing dependencies and running tests
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
 
   publish-npm:
     needs: build
@@ -27,7 +29,13 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
-      - run: npm ci
-      - run: npm publish
+          # Include the cache option for pnpm
+          cache: 'pnpm'
+      # Install pnpm
+      - run: npm install -g pnpm
+      # Use pnpm for installing dependencies
+      - run: pnpm install --frozen-lockfile
+      # Use pnpm for publishing. Note that pnpm might require --access public for scoped packages or if you're publishing to an organization for the first time
+      - run: pnpm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
