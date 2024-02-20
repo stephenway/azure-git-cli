@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import open from "open";
+
 import fetchAssignedStories from "./lib/queries/stories.mjs";
 import { fetchWorkItemsDetails } from "./lib/queries/workItems.mjs";
 import config from "./lib/azureConfig.mjs";
-
 import { selectStory } from "./lib/selectors/stories.mjs";
 import { selectIteration } from "./lib/selectors/iterations.mjs";
 
