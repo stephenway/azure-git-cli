@@ -38,6 +38,6 @@ jobs:
       # Use pnpm for installing dependencies
       - run: pnpm install --frozen-lockfile
       # Use pnpm for publishing. Note that pnpm might require --access public for scoped packages or if you're publishing to an organization for the first time
-      - run: pnpm publish --access public
+      - run: pnpm publish --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
