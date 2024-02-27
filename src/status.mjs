@@ -4,14 +4,36 @@ import config from "./lib/azureConfig.mjs";
 import { renderStatus } from "./lib/meta/status.mjs";
 
 const status = async () => {
-  const storyIds = await fetchAssignedStories("@CurrentIteration");
+  const statuses = [
+    "New",
+    "Ready",
+    "In Requirements",
+    "Groomed",
+    "PM Reviewed",
+    "Refinement Needed",
+    "Development",
+    "Quality Assurance",
+    "Accepted",
+    "Release Candidate",
+    "Blocked",
+    "Done",
+    "Removed",
+  ];
+
+  const iterationPathArg = process.argv
+    .find((arg) => arg.startsWith("-i=") || arg.startsWith("--iteration="))
+    .split("=")[1];
+  // Example "@CurrentIteration + 1"
+  const iteration = iterationPathArg || "@CurrentIteration";
+  console.log({ iteration });
+
+  const storyIds = await fetchAssignedStories(iteration);
   if (storyIds.length === 0) {
     console.log("No assigned stories found.");
     return;
   }
 
   const stories = await fetchWorkItemsDetails(storyIds);
-  // Check if stories were successfully fetched
   if (stories.length === 0) {
     console.log("No details found for the assigned stories.");
     return;
@@ -20,40 +42,15 @@ const status = async () => {
   console.log(`Working on ${config.project} with ${config.teamName}`);
   console.log("");
 
-  // Separate stories by status
-  const readyStories = stories
-    .filter((story) => story.state === "Ready")
-    .map((story) => story.id);
-  const developmentStories = stories
-    .filter((story) => story.state === "Development")
-    .map((story) => story.id);
-  const qaStories = stories
-    .filter((story) => story.state === "Quality Assurance")
-    .map((story) => story.id);
-  const blockedStories = stories
-    .filter((story) => story.state === "Blocked")
-    .map((story) => story.id);
-
-  // Output IDs of stories by status
   console.log("Assigned Stories by Status:");
-  if (readyStories.length > 0) {
-    console.log(`  ${renderStatus("Ready")}:`, readyStories.join(", "));
-  }
-  if (developmentStories.length > 0) {
-    console.log(
-      `  ${renderStatus("Development")}:`,
-      developmentStories.join(", ")
-    );
-  }
-  if (qaStories.length > 0) {
-    console.log(
-      `  ${renderStatus("Quality Assurance")}:`,
-      qaStories.join(", ")
-    );
-  }
-  if (blockedStories.length > 0) {
-    console.log(`  ${renderStatus("Blocked")}:`, blockedStories.join(", "));
-  }
+  statuses.forEach((status) => {
+    const filteredStories = stories
+      .filter((story) => story.state === status)
+      .map((story) => story.id);
+    if (filteredStories.length > 0) {
+      console.log(`  ${renderStatus(status)}:`, filteredStories.join(", "));
+    }
+  });
 };
 
 export default status;
